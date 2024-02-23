@@ -11,6 +11,7 @@ class User(db.Model):
     username = db.Column(db.String(50))
     email = db.Column(db.String)
     readings = db.relationship('ReadingLog', backref='user')
+    user_logs = db.relationship('UserLog', backref='user')
 
     def __repr__(self):
         return f'<User {self.id}, {self.username}, {self.email}>'
@@ -36,7 +37,19 @@ class ReadingLog(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
+    user_logs = db.relationship('UserLogs', backref='readinglog')
 
     def __repr__(self):
         return f'Reading Log {self.id}, {self.user_id}, {self.book_id}, {self.start_date}, {self.end_date}'
     
+class UserLogs(db.Model):
+    __tablename__ = 'user_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    reading_log_id = db.Column(db.Integer, db.ForeignKey('reading_logs.id'), nullable=False)
+    favorite = db.Column(db.Boolean) #user submittable attribute
+
+    def __repr__(self):
+        return f'User Log {self.id}, {self.user_id}, {self.reading_log_id}, {self.favorite}'
+
