@@ -3,7 +3,7 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request
+from flask import request, make_response, session
 from flask_restful import Resource
 
 # Local imports
@@ -12,10 +12,15 @@ from config import app, db, api
 from models.models import *
 
 # Views go here!
+class Auth(Resource):
+    def get(self):
+        try:
+            user = User.query.filter_by(id=session['user_id']).first()
+            return make_response(user.to_dict(), 200)
+        except:
+            return('Unauthorized', 401)
 
-@app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
+api.add_resource(Auth, '/auth')
 
 
 if __name__ == '__main__':
