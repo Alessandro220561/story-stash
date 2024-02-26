@@ -4,7 +4,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from config import db
 
 # Models go here!
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,7 +16,7 @@ class User(db.Model):
     def __repr__(self):
         return f'<User {self.id}, {self.username}, {self.email}>'
 
-class Book(db.Model):
+class Book(db.Model, SerializerMixin):
     __tablename__ = 'books'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +29,7 @@ class Book(db.Model):
     def __repr__(self):
         return f'<Book {self.id}, {self.title}, {self.author}, {self.genre}, {self.pages}>'
     
-class ReadingLog(db.Model):
+class ReadingLog(db.Model, SerializerMixin):
     __tablename__ = 'reading_logs'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +42,7 @@ class ReadingLog(db.Model):
     def __repr__(self):
         return f'Reading Log {self.id}, {self.user_id}, {self.book_id}, {self.start_date}, {self.end_date}'
     
-class UserLogs(db.Model):
+class UserLog(db.Model, SerializerMixin):
     __tablename__ = 'user_logs'
 
     id = db.Column(db.Integer, primary_key=True)
