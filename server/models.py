@@ -11,7 +11,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String(50))
     email = db.Column(db.String)
     readings = db.relationship('ReadingLog', backref='user')
-    user_logs = db.relationship('UserLog', backref='user')
+    user_log = db.relationship('UserLog', backref='user')
 
     def __repr__(self):
         return f'<User {self.id}, {self.username}, {self.email}>'
@@ -29,19 +29,6 @@ class Book(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<Book {self.id}, {self.title}, {self.author}, {self.genre}, {self.pages}>'
     
-class ReadingLog(db.Model, SerializerMixin):
-    __tablename__ = 'reading_logs'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
-    user_logs = db.relationship('UserLogs', backref='readinglog')
-
-    def __repr__(self):
-        return f'Reading Log {self.id}, {self.user_id}, {self.book_id}, {self.start_date}, {self.end_date}'
-    
 class UserLog(db.Model, SerializerMixin):
     __tablename__ = 'user_logs'
 
@@ -52,4 +39,18 @@ class UserLog(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'User Log {self.id}, {self.user_id}, {self.reading_log_id}, {self.favorite}'
+    
+class ReadingLog(db.Model, SerializerMixin):
+    __tablename__ = 'reading_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+    user_log = db.relationship('UserLog', backref='readinglog')
+
+    def __repr__(self):
+        return f'Reading Log {self.id}, {self.user_id}, {self.book_id}, {self.start_date}, {self.end_date}'
+    
 

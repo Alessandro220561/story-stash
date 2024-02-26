@@ -15,10 +15,10 @@ if __name__ == '__main__':
     with app.app_context():
 
         print("Deleting all records...")
+        UserLog.query.delete()
+        ReadingLog.query.delete()
         User.query.delete()
         Book.query.delete()
-        ReadingLog.query.delete()
-        UserLog.query.delete()
 
         print("Starting seed...")
         # Seed code goes here!
@@ -54,9 +54,10 @@ if __name__ == '__main__':
         for i in range(20):
             user_log = UserLog(
                 user_id = randint(1, 10),
-                reading_log = randint(1, 20),
+                reading_log_id = randint(1, 20),
                 favorite = rc([True, False])
             )
             db.session.add(user_log)
 
         db.session.commit()
+        print("Complete.")
